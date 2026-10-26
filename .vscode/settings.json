@@ -1,0 +1,40 @@
+{
+  // Sets the working directory every time a new terminal is spawned
+  "terminal.integrated.cwd": "wp-content/themes/wp-theme",
+  // Add tailwind intellisense to nav menu classes
+  "tailwindCSS.experimental.classRegex": [
+    "'.*_class'\\s*=>\\s*'(.*)'",
+  ],
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "prettier.singleQuote": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.semi": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "html.format.wrapAttributesIndentSize": 50,
+  "tailwindCSS.validate": true,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[php]": {
+    "editor.defaultFormatter": "DEVSENSE.phptools-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "php.format.codeStyle": "K&R",
+  "php.format.rules.spaceAroundConcatenation": true,
+  "php.format.rules.spaceBeforeParenthesesInControlStatements": true,
+}
