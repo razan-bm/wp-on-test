@@ -1,0 +1,164 @@
+{
+  "key": "group_642278fb8a49c",
+  "title": "Algolia Indexing",
+  "fields": [
+    {
+      "key": "field_641d3db77c10e",
+      "label": "Application Id",
+      "name": "application_id",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "show_in_graphql": 1,
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_641d3dc27c10f",
+      "label": "Application Secret key",
+      "name": "application_secret_key",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "show_in_graphql": 1,
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_64cc8e1280f05",
+      "label": "Algolia Index Key",
+      "name": "algolia_index_key",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "acfe_save_meta": 0,
+      "show_in_graphql": 1,
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_659cc309681e5",
+      "label": "Search Key",
+      "name": "search_key",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_6577e377a7495",
+      "label": "Post Type Indexing",
+      "name": "post_type_indexing",
+      "aria-label": "",
+      "type": "checkbox",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "show_in_graphql": 1,
+      "choices": [],
+      "default_value": [],
+      "return_format": "value",
+      "allow_custom": 0,
+      "layout": "vertical",
+      "toggle": 0,
+      "save_custom": 0,
+      "custom_choice_button_text": "Add new choice"
+    },
+    {
+      "key": "field_6423c0e62045a",
+      "label": "Re-index All Content",
+      "name": "reindex_all_content",
+      "aria-label": "",
+      "type": "acfe_button",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "button_value": "Reindex All",
+      "button_type": "button",
+      "button_class": "button button-primary",
+      "button_id": "",
+      "button_before": "<p>Index all pages and post for search</p>",
+      "button_after": "",
+      "button_ajax": 1
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "acf-options-algolia-indexing"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "acfe_display_title": "",
+  "acfe_autosync": ["json"],
+  "acfe_form": 0,
+  "acfe_meta": "",
+  "acfe_note": "",
+  "show_in_graphql": 0,
+  "graphql_field_name": "algoliaIndexing",
+  "map_graphql_types_from_location_rules": 0,
+  "graphql_types": "",
+  "modified": 1691127337
+}

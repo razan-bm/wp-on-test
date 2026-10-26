@@ -1,0 +1,75 @@
+.wpcf7-form {
+  label {
+    @apply block font-medium text-gray-700;
+  }
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  textarea {
+    @apply block w-full mt-1 shadow-sm focus:ring-green-400 focus:border-green-400 border-gray-300 rounded-md;
+  }
+  input[type='radio'] {
+    @apply checked:bg-green-400 focus:ring-green-400;
+  }
+
+  button[type='submit'] {
+    @apply h-[38px];
+    .text {
+      @apply inline whitespace-nowrap;
+    }
+    .loading {
+      @apply hidden w-6 h-6;
+    }
+  }
+
+  &.submitting {
+    button[type='submit'] {
+      .text {
+        @apply hidden;
+      }
+      .loading {
+        @apply block;
+      }
+    }
+  }
+
+  .wpcf7-spinner {
+    @apply hidden;
+  }
+
+  select {
+    @apply mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-400 focus:border-green-400 sm:text-sm rounded-md;
+  }
+  .wpcf7-acceptance {
+    @apply relative opacity-0;
+    > * {
+      @apply absolute;
+    }
+  }
+  .wpcf7-radio {
+    @apply mt-4 grid grid-cols-1 gap-y-4;
+  }
+  .wpcf7-list-item > label {
+    @apply flex items-center cursor-pointer;
+  }
+  .wpcf7-list-item-label {
+    @apply ml-3 block text-gray-700 font-normal;
+  }
+  .wpcf7-not-valid-tip {
+    @apply text-red-500 mt-1 text-sm;
+  }
+
+  .wpcf7 & .wpcf7-response-output {
+    @apply m-0 mt-8 border-0 border-l-4 p-4 text-sm;
+  }
+
+  .wpcf7 &.invalid .wpcf7-response-output,
+  .wpcf7 &.failed .wpcf7-response-output,
+  .wpcf7 &.aborted .wpcf7-response-output {
+    @apply border-red-500 bg-red-50 text-red-500 font-bold;
+  }
+
+  .wpcf7 &.sent .wpcf7-response-output {
+    @apply border-green-500 bg-green-50 text-green-500 font-bold;
+  }
+}

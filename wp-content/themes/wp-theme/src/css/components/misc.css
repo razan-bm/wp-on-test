@@ -1,0 +1,34 @@
+.grecaptcha-badge {
+  display: none !important;
+}
+
+svg {
+  @apply w-full h-full;
+}
+
+[x-cloak] {
+  display: none;
+}
+
+.focus-none {
+  @apply outline-none focus:outline-none focus-visible:ring-2;
+}
+
+.iframe-container {
+  @apply relative;
+  iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+}
+
+.prose {
+  .iframe-container {
+    @apply aspect-w-16 aspect-h-9;
+  }
+  .wp-caption-text {
+    @apply mt-[-1.75em] text-sm;
+  }
+  .aligncenter img {
+    @apply mx-auto;
+  }
+}
