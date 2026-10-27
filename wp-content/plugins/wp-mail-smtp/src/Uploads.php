@@ -3,6 +3,7 @@
 namespace WPMailSMTP;
 
 use WP_Error;
+use WP_Filesystem_Direct;
 
 /**
  * WPMailSMTP uploads.
@@ -10,6 +11,13 @@ use WP_Error;
  * @since 2.8.0
  */
 class Uploads {
+
+	/**
+	 * Uploads dir name.
+	 *
+	 * @since 4.1.1
+	 */
+	const ROOT_FOLDER_NAME = 'wp-mail-smtp';
 
 	/**
 	 * Get WPMailSMTP upload root path (e.g. /wp-content/uploads/wp-mail-smtp).
@@ -26,7 +34,7 @@ class Uploads {
 			return new WP_Error( 'wp_upload_dir_error', $upload_dir['error'] );
 		}
 
-		$dir = 'wp-mail-smtp';
+		$dir = self::ROOT_FOLDER_NAME;
 
 		$upload_root = trailingslashit( realpath( $upload_dir['basedir'] ) ) . $dir;
 
@@ -115,7 +123,7 @@ class Uploads {
 				return true;
 			}
 
-			@unlink( $htaccess_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_delete_file( $htaccess_file );
 		}
 
 		if ( ! function_exists( 'insert_with_markers' ) ) {
@@ -172,6 +180,32 @@ class Uploads {
 	}
 
 	/**
+	 * Create an .htaccess file that denies all web access in the specified directory, if it doesn't exist.
+	 *
+	 * @since 4.10.1
+	 *
+	 * @param string $path Path to the directory.
+	 *
+	 * @return int|false Number of bytes that were written to the file, or false on failure.
+	 */
+	public static function create_deny_htaccess_file( $path ) {
+
+		if ( ! is_dir( $path ) || is_link( $path ) ) {
+			return false;
+		}
+
+		$htaccess_file = wp_normalize_path( trailingslashit( $path ) . '.htaccess' );
+
+		if ( file_exists( $htaccess_file ) ) {
+			return false;
+		}
+
+		$contents = "<IfModule mod_authz_core.c>\n  Require all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n  Order deny,allow\n  Deny from all\n</IfModule>\n";
+
+		return file_put_contents( $htaccess_file, $contents ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	}
+
+	/**
 	 * Create index.html file in the specified directory if it doesn't exist.
 	 *
 	 * @since 2.8.0
@@ -195,5 +229,35 @@ class Uploads {
 
 		// Create empty index.html.
 		return file_put_contents( $index_file, '' ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	}
+
+	/**
+	 * Delete the WPMailSMTP uploads directory.
+	 *
+	 * @since 4.1.1
+	 *
+	 * @return void
+	 */
+	public static function delete_upload_dir() {
+
+		// Get the upload dir.
+		$upload_dir = self::upload_dir();
+
+		// If there is an error, return.
+		if ( is_wp_error( $upload_dir ) ) {
+			return;
+		}
+
+		$upload_root = $upload_dir['path'];
+
+		// Get WP Filesystembase files.
+		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+		// Initialize WP_Filesystem_Direct.
+		$wp_filesystem = new WP_Filesystem_Direct( false );
+
+		// Delete the directory.
+		$wp_filesystem->delete( $upload_root, true );
 	}
 }

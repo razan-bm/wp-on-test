@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+use RockLobsterInc\FormDataTree\{ FormDataTree };
+
 trait WPCF7_SWV_SchemaHolder {
 
 	protected $schema;
@@ -29,29 +33,26 @@ trait WPCF7_SWV_SchemaHolder {
 	 * Validates form inputs based on the schema and given context.
 	 */
 	public function validate_schema( $context, WPCF7_Validation $validity ) {
-		$callback = static function ( $rule ) use ( &$callback, $context, $validity ) {
-			if ( ! $rule->matches( $context ) ) {
-				return;
+		$schema = $this->get_schema();
+
+		$form_data = new FormDataTree( array(
+			'post' => wp_unslash( $_POST ),
+		) );
+
+		$context = wp_parse_args( $context );
+
+		foreach ( $schema->validate( $form_data, $context ) as $wp_error ) {
+			if ( ! is_wp_error( $wp_error ) ) {
+				continue;
 			}
 
-			if ( $rule instanceof WPCF7_SWV_CompositeRule ) {
-				foreach ( $rule->rules() as $child_rule ) {
-					call_user_func( $callback, $child_rule );
-				}
-			} else {
-				$field = $rule->get_property( 'field' );
+			$error = $wp_error->get_error_data();
+			$rule = $error->rule;
 
-				if ( $validity->is_valid( $field ) ) {
-					$result = $rule->validate( $context );
-
-					if ( is_wp_error( $result ) ) {
-						$validity->invalidate( $field, $result );
-					}
-				}
+			if ( isset( $rule->field ) and $validity->is_valid( $rule->field ) ) {
+				$validity->invalidate( $rule->field, $wp_error );
 			}
-		};
-
-		call_user_func( $callback, $this->get_schema() );
+		}
 	}
 
 }

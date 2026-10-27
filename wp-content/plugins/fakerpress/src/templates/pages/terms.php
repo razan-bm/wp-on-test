@@ -1,0 +1,23 @@
+<?php
+/**
+ * Admin page template for the terms screen.
+ *
+ * Prints the mount point the React admin app renders the terms screen into, plus a notice when JavaScript is off.
+ *
+ * @package FakerPress
+ */
+
+namespace FakerPress;
+
+use FakerPress\Admin\View\Abstract_View;
+
+/**
+ * @var Abstract_View $this The instance of the Template that we are using to build this view.
+ */
+?>
+<div class='wrap'>
+	<div id="fakerpress-react-root" data-fp-root data-page="terms"></div>
+	<noscript>
+		<p><?php esc_html_e( 'FakerPress requires JavaScript to be enabled.', 'fakerpress' ); ?></p>
+	</noscript>
+</div>

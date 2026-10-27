@@ -1,0 +1,110 @@
+<?php
+/**
+ * Admin view for the terms generator page.
+ *
+ * @package FakerPress
+ */
+
+namespace FakerPress\Admin\View;
+
+use FakerPress\Admin;
+use FakerPress\Module\Term;
+use FakerPress\Plugin;
+use function FakerPress\get_request_var;
+use function FakerPress\make;
+
+/**
+ * Admin view for the terms generator page: React mount point plus the legacy form handler.
+ *
+ * @since 0.6.4
+ *
+ * @package FakerPress\Admin\View
+ */
+class Term_View extends Abstract_View {
+	/**
+	 * @inheritDoc
+	 */
+	public static function get_slug(): string {
+		return 'terms';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function get_label(): string {
+		return esc_attr__( 'Terms', 'fakerpress' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function get_title(): string {
+		return esc_attr__( 'Generate Terms', 'fakerpress' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function has_menu(): bool {
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function get_page_data(): array {
+		$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+
+		return [
+			'taxonomies' => array_map(
+				static function ( $tax ) {
+					return [
+						'name'  => $tax->name,
+						'label' => $tax->label,
+					];
+				},
+				$taxonomies 
+			),
+		];
+	}
+
+	/**
+	 * Formats a generated term for the results notice. Terms get no link, only their ID.
+	 *
+	 * @since 0.6.0
+	 *
+	 * @param int $id ID of the term.
+	 *
+	 * @return int The term ID.
+	 */
+	public function format_link( $id ) {
+		return absint( $id );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function parse_request() {
+		// The Abstract just checks for a nonce actually super handy.
+		if ( ! parent::parse_request() ) {
+			return;
+		}
+
+		// After this point we are safe to say that we have a good POST request.
+		$results = (array) make( Term::class )->parse_request( null, get_request_var( Plugin::$slug, [] ) );
+
+		if ( is_string( $results ) ) {
+			return Admin::add_message( $results, 'error' );
+		} else {
+			return Admin::add_message(
+				sprintf(
+					/* translators: 1: Number of items created, 2: Item type label (singular or plural), 3: Comma-separated links to the new items. */
+					__( 'Faked %1$d new %2$s: [ %3$s ]', 'fakerpress' ),
+					count( $results ),
+					_n( 'term', 'terms', count( $results ), 'fakerpress' ),
+					implode( ', ', array_map( [ $this, 'format_link' ], $results ) )
+				)
+			);
+		}
+	}
+}

@@ -1,10 +1,11 @@
 === Contact Form 7 ===
-Contributors: takayukister
+Contributors: rocklobsterinc, takayukister
 Donate link: https://contactform7.com/donate/
-Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
-Requires at least: 6.0
-Tested up to: 6.2
-Stable tag: 5.7.7
+Tags: contact form, schema-woven validation
+Tested up to: 7.1
+Requires at least: 7.1
+Requires PHP: 8.3
+Stable tag: 6.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +13,7 @@ Just another contact form plugin. Simple but flexible.
 
 == Description ==
 
-Contact Form 7 can manage multiple contact forms, plus you can customize the form and the mail contents flexibly with simple markup. The form supports Ajax-powered submitting, CAPTCHA, Akismet spam filtering and so on.
+Contact Form 7 is a plugin designed to be a practical tool for all WordPress users who embrace the philosophy of free and open source software. It employs sophisticatedly modularized architecture and its original [Schema-Woven Validation](https://contactform7.com/schema-woven-validation/) technology.
 
 = Docs and support =
 
@@ -20,35 +21,11 @@ You can find [docs](https://contactform7.com/docs/), [FAQ](https://contactform7.
 
 = Contact Form 7 needs your support =
 
-It is hard to continue development and support for this free plugin without contributions from users like you. If you enjoy using Contact Form 7 and find it useful, please consider [making a donation](https://contactform7.com/donate/). Your donation will help encourage and support the plugin's continued development and better user support.
+It is hard to continue to maintain this plugin without support from users like you. There are several ways for you to [contribute to the project](https://contactform7.com/contributing/): testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.
 
 = Privacy notices =
 
-With the default configuration, this plugin, in itself, does not:
-
-* track users by stealth;
-* write any user personal data to the database;
-* send any data to external servers;
-* use cookies.
-
-If you activate certain features in this plugin, the contact form submitter's personal data, including their IP address, may be sent to the service provider. Thus, confirming the provider's privacy policy is recommended. These features include:
-
-* reCAPTCHA ([Google](https://policies.google.com/?hl=en))
-* Akismet ([Automattic](https://automattic.com/privacy/))
-* Constant Contact ([Endurance International Group](https://www.endurance.com/privacy))
-* [Brevo (formerly Sendinblue)](https://www.brevo.com/legal/privacypolicy/)
-* [Stripe](https://stripe.com/privacy)
-
-= Recommended plugins =
-
-The following plugins are recommended for Contact Form 7 users:
-
-* [Flamingo](https://wordpress.org/plugins/flamingo/) by Takayuki Miyoshi - With Flamingo, you can save submitted messages via contact forms in the database.
-* [Bogo](https://wordpress.org/plugins/bogo/) by Takayuki Miyoshi - Bogo is a straight-forward multilingual plugin that does not cause headaches.
-
-= Translations =
-
-You can [translate Contact Form 7](https://contactform7.com/translating-contact-form-7/) on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/contact-form-7).
+See [Plugin privacy notices](https://contactform7.com/plugin-privacy-notices/).
 
 == Installation ==
 
@@ -75,62 +52,22 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 == Changelog ==
 
+= 6.2.3 =
+
+* [Release announcement](https://contactform7.com/2026/10/21/contact-form-7-623/)
+
+= 6.2.2 =
+
+* [Release announcement](https://contactform7.com/2026/10/11/contact-form-7-622/)
+
+= 6.2.1 =
+
+* [Release announcement](https://contactform7.com/2026/10/08/contact-form-7-621/)
+
+= 6.2 =
+
+* [Release announcement](https://contactform7.com/2026/10/06/contact-form-7-620/)
+
 For more information, see [Releases](https://contactform7.com/category/releases/).
-
-= 5.7.7 =
-
-[https://contactform7.com/contact-form-7-577/](https://contactform7.com/contact-form-7-577/)
-
-= 5.7.6 =
-
-[https://contactform7.com/contact-form-7-576/](https://contactform7.com/contact-form-7-576/)
-
-= 5.7.5.1 =
-
-* Fixes an old PHP compatibility issue.
-
-= 5.7.5 =
-
-[https://contactform7.com/contact-form-7-575/](https://contactform7.com/contact-form-7-575/)
-
-= 5.7.4 =
-
-[https://contactform7.com/contact-form-7-574/](https://contactform7.com/contact-form-7-574/)
-
-= 5.7.3 =
-
-[https://contactform7.com/contact-form-7-573/](https://contactform7.com/contact-form-7-573/)
-
-= 5.7.2 =
-
-[https://contactform7.com/contact-form-7-572/](https://contactform7.com/contact-form-7-572/)
-
-= 5.7.1 =
-
-[https://contactform7.com/contact-form-7-571/](https://contactform7.com/contact-form-7-571/)
-
-= 5.7 =
-
-[https://contactform7.com/contact-form-7-57/](https://contactform7.com/contact-form-7-57/)
-
-= 5.6.4 =
-
-[https://contactform7.com/contact-form-7-564/](https://contactform7.com/contact-form-7-564/)
-
-= 5.6.3 =
-
-[https://contactform7.com/contact-form-7-563/](https://contactform7.com/contact-form-7-563/)
-
-= 5.6.2 =
-
-[https://contactform7.com/contact-form-7-562/](https://contactform7.com/contact-form-7-562/)
-
-= 5.6.1 =
-
-[https://contactform7.com/contact-form-7-561/](https://contactform7.com/contact-form-7-561/)
-
-= 5.6 =
-
-[https://contactform7.com/contact-form-7-56/](https://contactform7.com/contact-form-7-56/)
 
 == Upgrade Notice ==

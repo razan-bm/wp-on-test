@@ -10,10 +10,23 @@ if (!defined( 'ABSPATH')) exit;
  */
 class CFDB7_Wp_Main_Page
 {
+
+    private static $instance = null;
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
     /**
      * Constructor will create the menu item
      */
-    public function __construct()
+    private function __construct()
     {
         add_action( 'admin_menu', array($this, 'admin_list_table_page' ) );
     }
@@ -24,7 +37,8 @@ class CFDB7_Wp_Main_Page
      */
     public function admin_list_table_page()
     {
-        wp_enqueue_style( 'cfdb7-admin-style', plugin_dir_url(dirname(__FILE__)).'css/admin-style.css' );
+
+        wp_enqueue_style( 'cfdb7-admin-style', plugin_dir_url(dirname(__FILE__)).'css/admin-style.css', [], '1.4.1' );
 
 		// Fallback: Make sure admin always has access
 		$cfdb7_cap = ( current_user_can( 'cfdb7_access') ) ? 'cfdb7_access' : 'manage_options';
@@ -66,7 +80,7 @@ class CFDB7_Wp_Main_Page
         ?>
             <div class="wrap">
                 <div id="icon-users" class="icon32"></div>
-                <h2><?php _e( 'Contact Forms List', 'contact-form-cfdb7' ); ?></h2>
+                <h2><?php _e( 'Contact Forms', 'contact-form-cfdb7' ); ?></h2>
                 <?php $ListTable->display(); ?>
             </div>
         <?php
@@ -91,9 +105,6 @@ class CFDB7_Main_List_Table extends WP_List_Table
     public function prepare_items()
     {
 
-        global $wpdb;
-        $cfdb        = apply_filters( 'cfdb7_database', $wpdb );
-        $table_name  = $cfdb->prefix.'db7_forms';
         $columns     = $this->get_columns();
         $hidden      = $this->get_hidden_columns();
         $data        = $this->table_data();

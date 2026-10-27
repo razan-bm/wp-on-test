@@ -1,8 +1,72 @@
 <?php
 
-add_submenu_page('cfdb7-list.php', 'Extensions', 'Extensions', 'manage_options', 
-	'cfdb7-extensions',  'cfdb7_extensions' );
+if (!defined( 'ABSPATH')) exit;
 
+add_action('admin_menu', 'cfdb7_register_addon_submenu', 99);
+add_action('wp_after_admin_bar_render', 'cfdb7_upgrade_extensions');
+
+function cfdb7_upgrade_extensions() {
+
+	if( isset($_GET['cfdb7_upgrade']) && $_GET['cfdb7_upgrade'] === 'hide' ){
+		update_option('cfdb7_upgrade_hide', true);
+		return;
+	}
+
+	if ( ! isset($_GET['page']) || $_GET['page'] !== 'cfdb7-list.php' ) {
+		return;
+	}
+
+	$hide = get_option('cfdb7_upgrade_hide', false);
+	if( $hide ) return; 
+	?>
+
+	<div id="cfdb7-upgrade-banner">
+
+		<span class="cfdb7-discount">
+			<?php esc_html_e('76% OFF', 'contact-form-cfdb7' ); ?> 
+		</span>
+
+		<strong class="cfdb7-title">
+			<?php esc_html_e('CFDB7 Pro Extension Bundle', 'contact-form-cfdb7' ); ?> 
+		</strong>
+
+		<span class="cfdb7-description">
+			<?php esc_html_e('Unlock the full power of CFDB7 with all Pro extensions.', 'contact-form-cfdb7' ); ?> 
+		</span>
+
+		<a
+			class="cfdb7-button"
+			href="https://ciphercoin.com/downloads/cf7-addon-bundle/"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			<?php esc_html_e('Get Offer →',  'contact-form-cfdb7' ); ?>
+		</a>
+
+		<a
+			class="cfdb7-close"
+			href="<?php echo esc_url( add_query_arg( 'cfdb7_upgrade', 'hide' ) ); ?>"
+			aria-label="Dismiss offer"
+		>
+			&times;
+		</a>
+
+	</div>
+	<?php
+}
+
+function cfdb7_register_addon_submenu(){
+
+	add_submenu_page(
+		'cfdb7-list.php', 
+		__( 'Extensions', 'contact-form-cfdb7' ), 
+		'<span style="color:#f18500">' . esc_html__( 'Addons', 'contact-form-cfdb7' ) . '</span>',
+		'manage_options', 'cfdb7-extensions',  
+		'cfdb7_extensions',
+	);
+
+
+}
 
 /**
  * Extensions page
@@ -15,7 +79,7 @@ function cfdb7_extensions(){
                 <a class="button-primary" href="https://ciphercoin.com/contact-form-7-database-cfdb7-add-ons/"><?php _e( 'Browse All Extensions', 'contact-form-cfdb7' ); ?></a>
             </span>
         </h2>
-        <p><?php _e( 'These extensions <strong>add functionality</strong> to CFDB7', 'contact-form-cfdb7' ); ?></p>
+        <p><?php _e( 'Add extra features to CFDB7 with these extensions.', 'contact-form-cfdb7' ); ?></p>
         <?php echo cfdb7_add_ons_get_feed(); ?>
     </div>
     <?php
@@ -27,7 +91,7 @@ function cfdb7_extensions(){
  * Gets the add-ons page feed.
  *
  * @since 1.0
- * @return void
+ * @return string
  */
 function cfdb7_add_ons_get_feed(){
 	$cache = get_transient( 'cfdb7_add_ons_feed' );

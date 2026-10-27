@@ -36,8 +36,7 @@ class CFDB7_Wp_Sub_Page
                 <div id="icon-users" class="icon32"></div>
                 <h2><?php echo get_the_title( $this->form_post_id ); ?></h2>
                 <form method="post" action="">
-
-                    <?php $ListTable->search_box('Search', 'search'); ?>
+                    <?php $ListTable->search_box(__( 'Search', 'contact-form-cfdb7' ), 'search'); ?>
                     <?php $ListTable->display(); ?>
                 </form>
             </div>
@@ -55,7 +54,7 @@ if( ! class_exists( 'WP_List_Table' ) ) {
 class CFDB7_List_Table extends WP_List_Table
 {
     private $form_post_id;
-    private $column_titles;
+    private $column_titles = array();
 
     public function __construct() {
 
@@ -128,9 +127,9 @@ class CFDB7_List_Table extends WP_List_Table
             WHERE form_post_id = $form_post_id ORDER BY form_id DESC LIMIT 1", OBJECT 
         );
 
-        $first_row            = isset($results[0]) ? unserialize( $results[0]->form_value ): 0 ;
+        $first_row            = isset($results[0]) ? unserialize( $results[0]->form_value, ['allowed_classes' => false] ): 0 ;
         $columns              = array();
-        $rm_underscore        = apply_filters('remove_underscore_data', true); 
+        $rm_underscore        = apply_filters('cfdb7_remove_underscore_data', true); 
 
         if( !empty($first_row) ){
             //$columns['form_id'] = $results[0]->form_id;
@@ -157,7 +156,8 @@ class CFDB7_List_Table extends WP_List_Table
         }
 
 
-        return $columns;
+        return apply_filters('cfdb7_admin_subpage_columns', $columns, $form_post_id);
+
     }
     /**
      * Define check box for bulk action (each row)
@@ -241,7 +241,7 @@ class CFDB7_List_Table extends WP_List_Table
 
         foreach ( $results as $result ) {
 
-            $form_value = unserialize( $result->form_value );
+            $form_value = unserialize( $result->form_value, ['allowed_classes' => false] );
 
             $link  = "<b><a href=admin.php?page=cfdb7-list.php&fid=%s&ufid=%s>%s</a></b>";
             if(isset($form_value['cfdb7_status']) && ( $form_value['cfdb7_status'] === 'read' ) )
@@ -295,15 +295,12 @@ class CFDB7_List_Table extends WP_List_Table
         $table_name = $cfdb->prefix.'db7_forms';
         $action     = $this->current_action();
 
+        if ( ! current_user_can( 'cfdb7_access' ) && ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You are not allowed to perform this action.', 'contact-form-cfdb7' ) );
+        }
+
         if ( !empty( $action ) ) {
-
-            $nonce        = isset( $_REQUEST['_wpnonce'] ) ? $_REQUEST['_wpnonce'] : '';
-            $nonce_action = 'bulk-' . $this->_args['plural'];
-
-            if ( !wp_verify_nonce( $nonce, $nonce_action ) ){
-
-                wp_die( 'Not valid..!!' );
-            }
+            check_admin_referer( 'bulk-' . $this->_args['plural'] );
         }
 
         $form_ids = isset( $_POST['contact_form'] ) ? $_POST['contact_form'] : array();
@@ -311,22 +308,45 @@ class CFDB7_List_Table extends WP_List_Table
 
         if( 'delete' === $action ) {
 
+            $upload_dir    = wp_upload_dir();
+            $cfdb7_dirname = $upload_dir['basedir'] . '/cfdb7_uploads';
+            $cfdb7_dirname = trailingslashit( $cfdb7_dirname );
+            $upload_path   = realpath( $cfdb7_dirname );
+
             foreach ($form_ids as $form_id):
                 
                 $form_id       = (int) $form_id;
                 $results       = $cfdb->get_results( "SELECT * FROM $table_name WHERE form_id = '$form_id' LIMIT 1", OBJECT );
                 $result_value  = $results[0]->form_value;
-                $result_values = unserialize($result_value);
-                $upload_dir    = wp_upload_dir();
-                $cfdb7_dirname = $upload_dir['basedir'].'/cfdb7_uploads';
+                $result_values = unserialize($result_value, ['allowed_classes' => false]);
 
                 foreach ($result_values as $key => $result) {
 
-                    if ( ( strpos($key, 'cfdb7_file') !== false ) &&
-                        ! empty( $result ) && 
-                        file_exists($cfdb7_dirname.'/'.$result) ) {
+                    if (
+                        is_string( $key ) &&
+                        substr( $key, -strlen( 'cfdb7_file' ) ) === 'cfdb7_file' &&
+                        is_string( $result ) &&
+                        $result !== '' &&
+                        basename( $result ) === $result
+                    ) {
+                        $file_path   = realpath( $cfdb7_dirname . '/' . $result );
 
-                        unlink($cfdb7_dirname.'/'.$result);
+                        if (
+                            $file_path === false ||
+                            $upload_path === false ||
+                            ! is_file( $file_path ) ||
+                            strpos( $file_path, trailingslashit( $upload_path ) ) !== 0
+                        ) {
+                            continue;
+                        }
+
+                        $extension = strtolower( pathinfo( $file_path, PATHINFO_EXTENSION ) );
+
+                        if ( $extension === 'php' ) {
+                            continue;
+                        }
+
+                        unlink( $file_path );
                     }
 
                 }
@@ -346,12 +366,16 @@ class CFDB7_List_Table extends WP_List_Table
                 $form_id       = (int) $form_id;
                 $results       = $cfdb->get_results( "SELECT * FROM $table_name WHERE form_id = '$form_id' LIMIT 1", OBJECT );
                 $result_value  = $results[0]->form_value;
-                $result_values = unserialize( $result_value );
+                $result_values = unserialize( $result_value, ['allowed_classes' => false] );
                 $result_values['cfdb7_status'] = 'read';
                 $form_data = serialize( $result_values );
-                $cfdb->query(
-                    "UPDATE $table_name SET form_value = '$form_data' WHERE form_id = '$form_id'"
+                
+                $sql = $cfdb->prepare(
+                    "UPDATE {$table_name} SET form_value = %s WHERE form_id = %d",
+                    $form_data, 
+                    $form_id  
                 );
+                $cfdb->query( $sql );
 
             endforeach;
 
@@ -362,12 +386,15 @@ class CFDB7_List_Table extends WP_List_Table
                 $form_id       = (int) $form_id;
                 $results       = $cfdb->get_results( "SELECT * FROM $table_name WHERE form_id = '$form_id' LIMIT 1", OBJECT );
                 $result_value  = $results[0]->form_value;
-                $result_values = unserialize( $result_value );
+                $result_values = unserialize( $result_value, ['allowed_classes' => false] );
                 $result_values['cfdb7_status'] = 'unread';
                 $form_data = serialize( $result_values );
-                $cfdb->query(
-                    "UPDATE $table_name SET form_value = '$form_data' WHERE form_id = '$form_id'"
+                $sql = $cfdb->prepare(
+                    "UPDATE {$table_name} SET form_value = %s WHERE form_id = %d",
+                    $form_data, 
+                    $form_id  
                 );
+                $cfdb->query( $sql );
             endforeach;
         }
 
@@ -383,7 +410,7 @@ class CFDB7_List_Table extends WP_List_Table
      */
     public function column_default( $item, $column_name )
     {
-        return $item[ $column_name ];
+        return isset( $item[ $column_name ] ) ? $item[ $column_name ]: '';
 
     }
     /**
@@ -437,7 +464,7 @@ class CFDB7_List_Table extends WP_List_Table
              *
              * @param array $actions An array of the available bulk actions.
              */
-            $this->_actions = apply_filters( "bulk_actions-{$this->screen->id}", $this->_actions );
+            $this->_actions = apply_filters( "cfdb7_bulk_actions-{$this->screen->id}", $this->_actions );
             $two = '';
         } else {
             $two = '2';

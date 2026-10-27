@@ -2,10 +2,11 @@
 
 namespace WPMailSMTP\Providers;
 
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\ConnectionInterface;
-use WPMailSMTP\Debug;
 use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Options;
+use WPMailSMTP\Providers\Preflight\PreflightInterface; // phpcs:ignore WPForms.PHP.UseStatement.UnusedUseStatement
 
 /**
  * Class Loader.
@@ -20,25 +21,36 @@ class Loader {
 	 * @since 1.0.0
 	 * @since 1.6.0 Added Sendinblue.
 	 * @since 1.7.0 Added AmazonSES/Outlook as indication of the Pro mailers.
+	 * @since 4.1.0 Added SMTP2GO.
+	 * @since 4.2.0 Added Mailjet.
+	 * @since 4.3.0 Added Elastic Email.
+	 * @since 4.5.0 Added MailerSend.
+	 * @since 4.6.0 Added Mandrill.
 	 *
 	 * @var array
 	 */
 	protected $providers = [
-		'mail'        => 'WPMailSMTP\Providers\Mail\\',
-		'sendlayer'   => 'WPMailSMTP\Providers\Sendlayer\\',
-		'smtpcom'     => 'WPMailSMTP\Providers\SMTPcom\\',
-		'sendinblue'  => 'WPMailSMTP\Providers\Sendinblue\\',
-		'amazonses'   => 'WPMailSMTP\Providers\AmazonSES\\',
-		'gmail'       => 'WPMailSMTP\Providers\Gmail\\',
-		'mailgun'     => 'WPMailSMTP\Providers\Mailgun\\',
-		'outlook'     => 'WPMailSMTP\Providers\Outlook\\',
-		'pepipostapi' => 'WPMailSMTP\Providers\PepipostAPI\\',
-		'postmark'    => 'WPMailSMTP\Providers\Postmark\\',
-		'sendgrid'    => 'WPMailSMTP\Providers\Sendgrid\\',
-		'sparkpost'   => 'WPMailSMTP\Providers\SparkPost\\',
-		'zoho'        => 'WPMailSMTP\Providers\Zoho\\',
-		'smtp'        => 'WPMailSMTP\Providers\SMTP\\',
-		'pepipost'    => 'WPMailSMTP\Providers\Pepipost\\',
+		'mail'         => 'WPMailSMTP\Providers\Mail\\',
+		'sendlayer'    => 'WPMailSMTP\Providers\Sendlayer\\',
+		'smtpcom'      => 'WPMailSMTP\Providers\SMTPcom\\',
+		'sendinblue'   => 'WPMailSMTP\Providers\Sendinblue\\',
+		'amazonses'    => 'WPMailSMTP\Providers\AmazonSES\\',
+		'elasticemail' => 'WPMailSMTP\Providers\ElasticEmail\\',
+		'gmail'        => 'WPMailSMTP\Providers\Gmail\\',
+		'mailgun'      => 'WPMailSMTP\Providers\Mailgun\\',
+		'mailjet'      => 'WPMailSMTP\Providers\Mailjet\\',
+		'mailersend'   => 'WPMailSMTP\Providers\MailerSend\\',
+		'mandrill'     => 'WPMailSMTP\Providers\Mandrill\\',
+		'outlook'      => 'WPMailSMTP\Providers\Outlook\\',
+		'pepipostapi'  => 'WPMailSMTP\Providers\PepipostAPI\\',
+		'postmark'     => 'WPMailSMTP\Providers\Postmark\\',
+		'resend'       => 'WPMailSMTP\Providers\Resend\\',
+		'sendgrid'     => 'WPMailSMTP\Providers\Sendgrid\\',
+		'smtp2go'      => 'WPMailSMTP\Providers\SMTP2GO\\',
+		'sparkpost'    => 'WPMailSMTP\Providers\SparkPost\\',
+		'zoho'         => 'WPMailSMTP\Providers\Zoho\\',
+		'smtp'         => 'WPMailSMTP\Providers\SMTP\\',
+		'pepipost'     => 'WPMailSMTP\Providers\Pepipost\\',
 	];
 
 	/**
@@ -109,7 +121,7 @@ class Loader {
 	 */
 	public function get_options_all( $connection = null ) {
 
-		$options = array();
+		$options = [];
 
 		foreach ( $this->get_providers() as $provider => $path ) {
 
@@ -162,19 +174,54 @@ class Loader {
 	}
 
 	/**
-	 * Get a generic entity based on the request.
+	 * Get the provider pre-send check, if exists.
 	 *
-	 * @uses  \ReflectionClass
+	 * @since 4.10.0
+	 *
+	 * @param string $provider The provider name.
+	 *
+	 * @return PreflightInterface|null Null when the mailer has nothing to check.
+	 */
+	public function get_preflight( $provider ) {
+
+		if ( ! $this->has_preflight( $provider ) ) {
+			return null;
+		}
+
+		return $this->get_entity( $provider, 'Preflight' );
+	}
+
+	/**
+	 * Whether the provider ships a pre-send check.
+	 *
+	 * @since 4.10.0
+	 *
+	 * @param string $provider The provider name.
+	 *
+	 * @return bool
+	 */
+	public function has_preflight( $provider ) {
+
+		$path = $this->get_provider_path( $provider );
+
+		// The shared resolver records a debug error for a class most mailers omit by design.
+		return ! empty( $path ) && class_exists( $path . 'Preflight' );
+	}
+
+	/**
+	 * Get a generic entity based on the request.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $provider
 	 * @param string $request
-	 * @param array  $args     Entity instantiation arguments.
+	 * @param array  $args Entity instantiation arguments.
 	 *
 	 * @return OptionsAbstract|MailerAbstract|AuthAbstract|null
+	 * @uses  \ReflectionClass
+	 *
 	 */
-	protected function get_entity( $provider, $request, $args = []  ) {
+	protected function get_entity( $provider, $request, $args = [] ) {
 
 		$provider = sanitize_key( $provider );
 		$request  = sanitize_text_field( $request );
@@ -192,13 +239,19 @@ class Loader {
 				$class  = $path . $request;
 				$entity = new $class( ...$args );
 			}
-		}
-		catch ( \Exception $e ) {
-			Debug::set( "There was a problem while retrieving {$request} for {$provider}: {$e->getMessage()}" );
+		} catch ( \Exception $e ) {
+			DebugEvents::add(
+				sprintf( /* translators: %1$s - requested entity, %2$s - provider slug, %3$s - error message. */
+					__( 'There was a problem while retrieving %1$s for %2$s: %3$s', 'wp-mail-smtp' ),
+					$request,
+					$provider,
+					$e->getMessage()
+				)
+			);
 			$entity = null;
 		}
 
-		return apply_filters( 'wp_mail_smtp_providers_loader_get_entity', $entity, $provider, $request );
+		return apply_filters( 'wp_mail_smtp_providers_loader_get_entity', $entity, $provider, $request, $args );
 	}
 
 	/**

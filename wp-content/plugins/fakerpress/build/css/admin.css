@@ -1,0 +1,67 @@
+/* = Settings Screen
+=============================================*/
+
+.fp-link-footer {
+	-webkit-text-decoration: none;
+	-webkit-text-decoration: none;
+	-webkit-text-decoration: none;
+	-webkit-text-decoration: none;
+	-webkit-text-decoration: none;
+	-webkit-text-decoration: none;
+	text-decoration: none;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.fp-link-footer:hover {
+		-webkit-text-decoration: underline;
+		-webkit-text-decoration: underline;
+		-webkit-text-decoration: underline;
+		-webkit-text-decoration: underline;
+		-webkit-text-decoration: underline;
+		-webkit-text-decoration: underline;
+		text-decoration: underline;
+	}
+
+.fp-link-footer:hover span {
+			-webkit-text-decoration: none;
+			-webkit-text-decoration: none;
+			-webkit-text-decoration: none;
+			-webkit-text-decoration: none;
+			-webkit-text-decoration: none;
+			-webkit-text-decoration: none;
+			text-decoration: none;
+		}
+
+
+.select2-drop {
+	padding-top: 8px;
+}
+
+
+.select2-drop.select2-drop-active {
+		border: 2px solid #2271b1;
+		border-top: 0;
+	}
+
+
+.select2-drop .select2-search::after {
+			content: "\f179";
+			display: block;
+			position: absolute;
+			top: 9px;
+			text-align: center;
+			font: 400 20px/1 dashicons !important;
+			right: 13px;
+			speak: never;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+
+.select2-drop .select2-search input[type="text"] {
+			background: #fff !important;
+			padding-right: 30px;
+		}
+
+

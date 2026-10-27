@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * Server-side user input validation manager.
  */
@@ -35,8 +37,7 @@ class WPCF7_Validation implements ArrayAccess {
 
 		$name = ! empty( $tag ) ? $tag->name : null;
 
-		if ( empty( $name )
-		or ! wpcf7_is_name( $name ) ) {
+		if ( empty( $name ) or ! wpcf7_is_name( $name ) ) {
 			return;
 		}
 
@@ -47,10 +48,9 @@ class WPCF7_Validation implements ArrayAccess {
 		}
 
 		if ( $this->is_valid( $name ) ) {
-			$id = $tag->get_id_option();
+			$id = (string) $tag->get_option( 'id', 'id', true );
 
-			if ( empty( $id )
-			or ! wpcf7_is_name( $id ) ) {
+			if ( ! wpcf7_is_name( $id ) or str_starts_with( $id, 'wpcf7' ) ) {
 				$id = null;
 			}
 
@@ -101,8 +101,7 @@ class WPCF7_Validation implements ArrayAccess {
 			$this->container[$offset] = $value;
 		}
 
-		if ( 'reason' == $offset
-		and is_array( $value ) ) {
+		if ( 'reason' === $offset and is_array( $value ) ) {
 			foreach ( $value as $k => $v ) {
 				$this->invalidate( $k, $v );
 			}
