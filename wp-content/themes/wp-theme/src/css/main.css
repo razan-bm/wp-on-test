@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+@import './components/fonts.css' layer(base);
+@import './components/containers.css';
+@import './components/buttons.css' layer(components);
+@import './components/form.css' layer(components);
+@import './components/misc.css' layer(components);
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-red: #f15a22;
+  --color-green: #72bf44;
+
+  --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-heading: 'Montserrat', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --breakpoint-4k: 160rem;
+}
+
+/* v4 defaults borders to currentColor; keep the v3 gray-200 default */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+.prose {
+  --tw-prose-body: var(--color-black);
+  --tw-prose-bold: var(--color-black);
+  --tw-prose-headings: var(--color-black);
+  --tw-prose-bullets: var(--color-black);
+  --tw-prose-quotes: var(--color-black);
+}

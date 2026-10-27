@@ -11,7 +11,7 @@ $set_data = get_query_var('set_data', false);
       x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
       x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
       x-description="Background overlay, show/hide based on modal state." @click="open = false"
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
 
     <!-- This element is to trick the browser into centering the modal contents. -->
     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>

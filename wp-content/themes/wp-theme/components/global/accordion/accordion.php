@@ -13,7 +13,7 @@ $open = $fields['open'] ? 'true' : 'false';
 <div class="border-b border-black">
   <dt>
     <button type="button"
-      class="bg-gray w-full pt-4 pb-3 focus:outline-none text-lg 4k:text-xl font-subheading uppercase text-left transition-colors hover:text-gray-dark"
+      class="bg-gray w-full pt-4 pb-3 focus:outline-hidden text-lg 4k:text-xl font-subheading uppercase text-left transition-colors hover:text-gray-dark"
       @click="index = <?= $fields['index'] ?>; allCollapsed = false" aria-controls="accordion-<?= $accordion_index ?>"
       x-bind:aria-expanded="index == <?= $fields['index'] ?> ? 'true' : 'false'">
       <?= $fields['title'] ?>

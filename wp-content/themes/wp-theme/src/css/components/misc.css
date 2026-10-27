@@ -11,7 +11,7 @@ svg {
 }
 
 .focus-none {
-  @apply outline-none focus:outline-none focus-visible:ring-2;
+  @apply outline-hidden focus:outline-hidden focus-visible:ring-2;
 }
 
 .iframe-container {
@@ -23,7 +23,7 @@ svg {
 
 .prose {
   .iframe-container {
-    @apply aspect-w-16 aspect-h-9;
+    @apply aspect-video;
   }
   .wp-caption-text {
     @apply mt-[-1.75em] text-sm;
