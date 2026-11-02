@@ -1,6 +1,7 @@
 <?php
 require_once 'lib/enqueue-scripts.php';
 require_once 'lib/disable-comments.php';
+require_once 'lib/cleanup.php';
 require_once 'lib/single-category-per-post.php';
 require_once 'lib/utils.php';
 require_once 'lib/setup.php';
