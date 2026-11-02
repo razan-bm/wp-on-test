@@ -1,0 +1,5 @@
+<section <?= get_section_attributes($fields, '{{slug}}') ?>>
+  <div class="container">
+    <?php // TODO: {{label}} markup ?>
+  </div>
+</section>

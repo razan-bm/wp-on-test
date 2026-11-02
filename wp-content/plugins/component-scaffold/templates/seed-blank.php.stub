@@ -1,0 +1,17 @@
+<?php
+// Fake content for `wp components seed`
+return function ($faker, $image) {
+  return [
+    // TODO: {{label}} fields
+    'layout' => [
+      'background' => 'white',
+      'text_color' => 'auto',
+      'spacing_top' => 'md',
+      'spacing_bottom' => 'md',
+    ],
+    'settings' => [
+      'section_id' => '',
+      'hide_section' => 0,
+    ],
+  ];
+};
