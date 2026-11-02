@@ -12,7 +12,7 @@ $heading = in_array($title_content['heading_level'] ?? '', ['h1', 'h2', 'h3', 'h
     <?php endif; ?>
 
     <?php if (!empty($title_content['content'])) : ?>
-    <div class="prose mt-4 text-current [--tw-prose-body:currentColor] [--tw-prose-headings:currentColor]">
+    <div class="prose mt-4 text-current">
       <?= $title_content['content'] ?>
     </div>
     <?php endif; ?>

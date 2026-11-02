@@ -55,7 +55,7 @@ class Component_Scaffold_Command {
    */
   public function __invoke($args, $assoc_args) {
     $config = $this->get_config();
-    $slug = sanitize_title($args[0]);
+    $slug = str_replace('_', '-', sanitize_title($args[0]));
     if (!$slug) {
       WP_CLI::error('Give the component a name, e.g. cards-grid.');
     }
