@@ -1,5 +1,5 @@
 </main>
-<footer class="bg-ink text-cream">
+<footer class="bg-ink text-cream dark:border-t dark:border-cream/10">
   <div class="container py-12 lg:py-16">
     <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
       <a href="<?= home_url() ?>" class="font-heading text-xl font-bold">

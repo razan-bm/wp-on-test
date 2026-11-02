@@ -91,6 +91,11 @@ function get_section_attributes($fields, $class = '') {
     'ink' => 'text-ink',
     'cream' => 'text-cream',
   ];
+  // Light backgrounds switch to ink in dark mode, cream keeps a slightly lighter tint
+  $dark_backgrounds = [
+    'white' => 'dark:bg-ink',
+    'cream' => 'dark:bg-cream/5',
+  ];
   // "auto" picks a readable text color for the background
   $auto_text = ['ink' => 'cream'];
   $background = isset($backgrounds[$layout['background'] ?? '']) ? $layout['background'] : 'white';
@@ -103,7 +108,9 @@ function get_section_attributes($fields, $class = '') {
   $classes = array_filter([
     $class,
     $backgrounds[$background],
+    $dark_backgrounds[$background] ?? '',
     $text_colors[$text],
+    isset($dark_backgrounds[$background]) && $text === 'ink' ? 'dark:text-cream' : '',
     $spacing_top[$layout['spacing_top'] ?? ''] ?? $spacing_top['md'],
     $spacing_bottom[$layout['spacing_bottom'] ?? ''] ?? $spacing_bottom['md'],
   ]);

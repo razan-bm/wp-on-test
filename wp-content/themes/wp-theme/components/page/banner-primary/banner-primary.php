@@ -24,7 +24,7 @@ $buttons = !empty($fields['add_button']) ? ($fields['button'] ?? []) : [];
       <?php endif; ?>
 
       <?php if (!empty($title_content['content'])) : ?>
-      <div class="prose prose-lg mt-6 text-current [--tw-prose-body:currentColor] [--tw-prose-headings:currentColor]">
+      <div class="prose prose-lg mt-6 text-current">
         <?= $title_content['content'] ?>
       </div>
       <?php endif; ?>

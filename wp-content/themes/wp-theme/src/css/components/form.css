@@ -1,12 +1,12 @@
 .wpcf7-form {
   label {
-    @apply block font-medium text-gray-700;
+    @apply block font-medium text-gray-700 dark:text-cream;
   }
   input[type='text'],
   input[type='email'],
   input[type='tel'],
   textarea {
-    @apply block w-full mt-1 shadow-xs focus:ring-green-400 focus:border-green-400 border-gray-300 rounded-md;
+    @apply block w-full mt-1 shadow-xs focus:ring-green-400 focus:border-green-400 border-gray-300 rounded-md dark:border-cream/20 dark:bg-cream/5 dark:text-cream;
   }
   input[type='radio'] {
     @apply checked:bg-green-400 focus:ring-green-400;

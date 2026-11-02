@@ -8,6 +8,9 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/* Dark mode follows the .dark class on <html>, set from the header toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-red: #f15a22;
   --color-green: #72bf44;
@@ -29,12 +32,26 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-white text-ink dark:bg-ink dark:text-cream;
+  }
 }
 
+/* Prose inherits the section's text color, so it works on light, dark and colored backgrounds */
 .prose {
-  --tw-prose-body: var(--color-black);
-  --tw-prose-bold: var(--color-black);
-  --tw-prose-headings: var(--color-black);
-  --tw-prose-bullets: var(--color-black);
-  --tw-prose-quotes: var(--color-black);
+  --tw-prose-body: currentColor;
+  --tw-prose-bold: currentColor;
+  --tw-prose-headings: currentColor;
+  --tw-prose-links: currentColor;
+  --tw-prose-bullets: currentColor;
+  --tw-prose-quotes: currentColor;
+  --tw-prose-counters: currentColor;
+  --tw-prose-captions: currentColor;
 }
