@@ -87,13 +87,13 @@
               <?php
               wp_nav_menu(array(
                 'theme_location' => 'header',
-                'a_class' => 'block py-2 px-8 text-base font-semibold font-semibold text-navy',
+                'a_class' => 'block py-2 px-8 text-base font-semibold font-semibold text-ink',
                 'a_active_class' => 'text-green',
                 'button_container_class' => 'relative',
-                'button_class' => 'flex items-center w-full py-2 px-8 text-base font-semibold text-navy',
+                'button_class' => 'flex items-center w-full py-2 px-8 text-base font-semibold text-ink',
                 'button_active_class' => 'text-green',
                 'sub_menu_class' => 'pl-4',
-                'sub_menu_a_class' => 'block px-8 py-2 text-base text-navy',
+                'sub_menu_a_class' => 'block px-8 py-2 text-base text-ink',
                 'sub_menu_a_active_class' => 'text-green',
                 'button_after' => $button_after,
                 'type' => 'mobile'

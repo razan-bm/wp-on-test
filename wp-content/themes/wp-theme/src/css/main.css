@@ -11,6 +11,8 @@
 @theme {
   --color-red: #f15a22;
   --color-green: #72bf44;
+  --color-cream: #fbf7f0;
+  --color-ink: #2b2621;
 
   --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --font-heading: 'Montserrat', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
