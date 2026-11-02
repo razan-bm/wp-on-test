@@ -303,7 +303,7 @@
                 },
                 {
                     "key": "field_6ae07bede9bb6",
-                    "label": "Button Display Type",
+                    "label": "Button Style",
                     "name": "button_display_type",
                     "aria-label": "",
                     "type": "select",
@@ -316,8 +316,9 @@
                         "id": ""
                     },
                     "choices": {
-                        "primary": "Primary",
-                        "secondary": "Secondary"
+                        "primary": "Primary (green)",
+                        "secondary": "Secondary (outline)",
+                        "link": "Text link with arrow"
                     },
                     "default_value": "primary",
                     "return_format": "value",
@@ -648,5 +649,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1793099922
+    "modified": 1793601658
 }

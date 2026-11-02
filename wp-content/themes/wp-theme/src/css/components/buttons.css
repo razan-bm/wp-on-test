@@ -1,15 +1,18 @@
-.btn-primary {
-  @apply inline-flex items-center justify-center text-base font-medium px-6 py-3 rounded-md bg-gray-400 text-white cursor-pointer;
-}
-
+.btn-primary,
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-800 bg-white hover:bg-gray-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-md border-2 px-6 py-3 text-base font-semibold leading-tight transition cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50;
 }
 
-.btn-tertiary {
-  @apply inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-800 border-gray-800 hover:bg-white;
+/* Brand green with ink text (6.6:1 contrast) */
+.btn-primary {
+  @apply border-green bg-green text-ink hover:border-green/85 hover:bg-green/85;
 }
 
-.btn-arrow {
-  @apply inline-flex items-center text-gray-800 hover:underline;
+/* Outline in the surrounding text color, so it works on light and dark sections */
+.btn-secondary {
+  @apply border-current bg-transparent text-current hover:bg-current/10;
+}
+
+.btn-link {
+  @apply inline-flex items-center gap-2 font-semibold text-current underline-offset-4 transition hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current;
 }

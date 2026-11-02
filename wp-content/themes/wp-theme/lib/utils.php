@@ -115,6 +115,15 @@ function get_section_attributes($fields, $class = '') {
   return $atts;
 }
 
+/**
+ * Button from the reusable "button" group as a string (see components/global/button/button.php)
+ */
+function get_button($button, $class = '') {
+  ob_start();
+  get_template_part('components/global/button/button', null, ['button' => $button, 'class' => $class]);
+  return ob_get_clean();
+}
+
 function paginate_links_custom($url_append = '', $end_size = 1, $mid_size = 2, $prev_next = true) {
   $page_var = is_front_page() ? 'page' : 'paged';
   $big = 9999999;
