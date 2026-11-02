@@ -205,3 +205,33 @@ function paginate_links_custom($url_append = '', $end_size = 1, $mid_size = 2, $
 
   return $page_links;
 }
+/**
+ * Give every H2 and H3 in some HTML an id and list them for a table of contents.
+ * Returns ['content' => html with ids, 'headings' => [['id', 'text', 'level'], ...]]
+ */
+function get_content_toc($content) {
+  $headings = [];
+  $used = [];
+  $content = preg_replace_callback('/<h([23])([^>]*)>(.*?)<\/h\1>/is', function ($match) use (&$headings, &$used) {
+    [, $level, $atts, $inner] = $match;
+    $text = trim(wp_strip_all_tags($inner));
+    if ($text === '') {
+      return $match[0];
+    }
+    if (preg_match('/\sid=["\']([^"\']+)["\']/i', $atts, $id_match)) {
+      $id = $id_match[1];
+    } else {
+      $id = sanitize_title($text) ?: 'section';
+      $base = $id;
+      for ($i = 2; isset($used[$id]); $i++) {
+        $id = "$base-$i";
+      }
+      $atts .= ' id="' . esc_attr($id) . '"';
+    }
+    $used[$id] = true;
+    $headings[] = ['id' => $id, 'text' => $text, 'level' => (int) $level];
+    return "<h$level$atts>$inner</h$level>";
+  }, $content);
+
+  return ['content' => $content, 'headings' => $headings];
+}

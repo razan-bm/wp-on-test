@@ -55,3 +55,8 @@
   --tw-prose-counters: currentColor;
   --tw-prose-captions: currentColor;
 }
+
+/* Headings linked from a table of contents stop below the sticky header */
+.prose :where(h2, h3)[id] {
+  scroll-margin-top: 7rem;
+}
