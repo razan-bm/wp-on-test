@@ -9,6 +9,13 @@ function register_primary_menus() {
   ));
 }
 
+// Hide block editor screens from Appearance, the theme uses Classic Editor + ACF components
+// and self-hosted fonts, so Patterns and the Font Library have no effect on the site
+add_action('admin_menu', function () {
+  remove_submenu_page('themes.php', 'site-editor.php?p=/pattern');
+  remove_submenu_page('themes.php', 'font-library.php');
+});
+
 // Theme setup
 add_action('after_setup_theme', 'add_theme_supports');
 function add_theme_supports() {
