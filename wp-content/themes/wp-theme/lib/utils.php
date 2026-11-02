@@ -73,6 +73,48 @@ function get_page_component_path($component_name) {
   return get_component_path("page/$component_name/$component_name");
 }
 
+/**
+ * Build the id and class attributes for a page component's <section>
+ * from its "Layout" and "Settings" tabs (see Reusable Components).
+ * Usage: <section <?= get_section_attributes($fields, 'banner-primary') ?>>
+ */
+function get_section_attributes($fields, $class = '') {
+  $layout = $fields['layout'] ?? [];
+  $settings = $fields['settings'] ?? [];
+  $backgrounds = [
+    'white' => 'bg-white',
+    'cream' => 'bg-cream',
+    'green' => 'bg-green',
+    'ink' => 'bg-ink',
+  ];
+  $text_colors = [
+    'ink' => 'text-ink',
+    'cream' => 'text-cream',
+  ];
+  // "auto" picks a readable text color for the background
+  $auto_text = ['ink' => 'cream'];
+  $background = isset($backgrounds[$layout['background'] ?? '']) ? $layout['background'] : 'white';
+  $text = $layout['text_color'] ?? 'auto';
+  $text = isset($text_colors[$text]) ? $text : ($auto_text[$background] ?? 'ink');
+  // Full class names so Tailwind can find them
+  $spacing_top = ['none' => 'pt-0', 'sm' => 'pt-8 lg:pt-12', 'md' => 'pt-12 lg:pt-20', 'lg' => 'pt-16 lg:pt-32'];
+  $spacing_bottom = ['none' => 'pb-0', 'sm' => 'pb-8 lg:pb-12', 'md' => 'pb-12 lg:pb-20', 'lg' => 'pb-16 lg:pb-32'];
+
+  $classes = array_filter([
+    $class,
+    $backgrounds[$background],
+    $text_colors[$text],
+    $spacing_top[$layout['spacing_top'] ?? ''] ?? $spacing_top['md'],
+    $spacing_bottom[$layout['spacing_bottom'] ?? ''] ?? $spacing_bottom['md'],
+  ]);
+
+  $atts = 'class="' . esc_attr(implode(' ', $classes)) . '"';
+  if (!empty($settings['section_id'])) {
+    $atts = 'id="' . esc_attr(sanitize_title($settings['section_id'])) . '" ' . $atts;
+  }
+  return $atts;
+}
+
 function paginate_links_custom($url_append = '', $end_size = 1, $mid_size = 2, $prev_next = true) {
   $page_var = is_front_page() ? 'page' : 'paged';
   $big = 9999999;

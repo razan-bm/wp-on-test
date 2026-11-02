@@ -14,6 +14,9 @@ get_header();
 
 if ($page_components) {
   foreach ($page_components as $page_component) {
+    if (!empty($page_component['settings']['hide_section'])) {
+      continue;
+    }
     $component_name = str_replace('_', '-', $page_component['acf_fc_layout']);
     $fields = $page_component;
     $path = get_page_component_path($component_name);
