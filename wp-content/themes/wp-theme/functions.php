@@ -5,6 +5,7 @@ require_once 'lib/single-category-per-post.php';
 require_once 'lib/utils.php';
 require_once 'lib/setup.php';
 require_once 'lib/acf.php';
+require_once 'lib/page-components.php';
 require_once 'lib/cf7.php';
 require_once 'lib/shortcodes.php';
 require_once 'lib/replace-image-urls.php';
