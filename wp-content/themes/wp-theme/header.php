@@ -49,7 +49,7 @@
             'button_container_class' => 'relative',
             'button_class' => 'group px-2 py-2 text-gray-500 bg-white rounded-md inline-flex items-center text-base font-medium hover:text-green focus:text-green focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-green',
             'button_active_class' => 'text-green',
-            'sub_menu_class' => 'absolute z-20 -ml-4 mt-3 transform w-screen max-w-sm rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden bg-white py-3',
+            'sub_menu_class' => 'absolute right-0 z-20 mt-3 w-screen max-w-xs rounded-lg shadow-lg ring-1 ring-black/5 overflow-hidden bg-white py-3',
             'sub_menu_a_class' => 'block px-5 py-3 hover:text-white hover:bg-green',
             'sub_menu_a_active_class' => 'text-green',
             'sub_menu_1_a_class' => 'pl-10',

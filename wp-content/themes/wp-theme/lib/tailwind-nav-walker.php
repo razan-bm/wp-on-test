@@ -1,12 +1,26 @@
 <?php
 
+// Only the header uses the Tailwind/Alpine dropdown walker, other menus (e.g. footer) keep the default list markup
 add_filter('wp_nav_menu_args', 'tailwind_nav_menu_args');
 function tailwind_nav_menu_args($args) {
+  if (($args['theme_location'] ?? '') !== 'header') {
+    return $args;
+  }
   $args['type'] = $args['type'] ?? 'desktop';
+  $args['fallback_cb'] = false;
   $args['container'] = false;
   $args['items_wrap'] = '%3$s';
   $args['walker'] = new Tailwind_Walker_Nav_Menu($args['type']);
   return $args;
+}
+
+// Lets a regular wp_nav_menu() style its links with an 'a_class' argument
+add_filter('nav_menu_link_attributes', 'nav_menu_a_class', 10, 3);
+function nav_menu_a_class($atts, $item, $args) {
+  if (!empty($args->a_class) && !($args->walker instanceof Tailwind_Walker_Nav_Menu)) {
+    $atts['class'] = trim(($atts['class'] ?? '') . ' ' . $args->a_class);
+  }
+  return $atts;
 }
 
 class Tailwind_Walker_Nav_Menu extends Walker {

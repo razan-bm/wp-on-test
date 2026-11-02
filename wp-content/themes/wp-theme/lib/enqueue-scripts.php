@@ -8,7 +8,9 @@ function enqueue_from_manifest() {
     $json = json_decode($str, true);
     wp_enqueue_style('main', get_template_directory_uri() . '/dist/' . $json['main.css']);
     wp_enqueue_script('main', get_template_directory_uri() . '/dist/' . $json['main.js']);
-    wp_enqueue_script('alpine', 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js', ['main']);
+    // Plugins must load before Alpine itself (used by x-collapse in the mobile menu and accordion)
+    wp_enqueue_script('alpine-collapse', 'https://unpkg.com/@alpinejs/collapse@3.17.4/dist/cdn.min.js', ['main']);
+    wp_enqueue_script('alpine', 'https://unpkg.com/alpinejs@3.17.4/dist/cdn.min.js', ['alpine-collapse']);
   }
 }
 
@@ -39,7 +41,7 @@ function enqueue_swiper() {
 
 add_filter('script_loader_tag', 'defer_custom_scripts', 10, 2);
 function defer_custom_scripts($tag, $handle) {
-  if (in_array($handle, ['main', 'alpine', 'swiper'])) {
+  if (in_array($handle, ['main', 'alpine-collapse', 'alpine', 'swiper'])) {
     return str_replace(' src', ' defer src', $tag);
   } else {
     return $tag;
