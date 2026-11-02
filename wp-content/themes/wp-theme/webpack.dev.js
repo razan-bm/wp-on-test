@@ -11,7 +11,7 @@ module.exports = merge(common, {
       cleanStaleWebpackAssets: false,
     }),
     new BrowserSyncPlugin({
-      proxy: 'www.base.local',
+      proxy: 'http://my-lab.test/',
       files: ['**/*.php'],
       reloadDelay: 0,
       notify: false,
