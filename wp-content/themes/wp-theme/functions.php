@@ -7,6 +7,7 @@ require_once 'lib/utils.php';
 require_once 'lib/setup.php';
 require_once 'lib/acf.php';
 require_once 'lib/page-components.php';
+require_once 'lib/editor.php';
 require_once 'lib/seed-components.php';
 require_once 'lib/cf7.php';
 require_once 'lib/shortcodes.php';

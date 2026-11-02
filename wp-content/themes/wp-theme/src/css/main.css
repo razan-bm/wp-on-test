@@ -60,3 +60,18 @@
 .prose :where(h2, h3)[id] {
   scroll-margin-top: 7rem;
 }
+
+/* Buttons inside rich text keep their own look instead of the prose link style */
+.prose a:is(.btn-primary, .btn-secondary, .btn-link) {
+  font-weight: 600;
+  text-decoration: none;
+}
+.prose a:is(.btn-primary, .btn-secondary) {
+  margin: 0.25rem 0.75rem 0.25rem 0;
+}
+.prose a.btn-primary {
+  color: var(--color-ink);
+}
+.prose a.btn-link:hover {
+  text-decoration: underline;
+}
